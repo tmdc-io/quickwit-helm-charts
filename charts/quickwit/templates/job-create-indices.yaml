@@ -45,12 +45,18 @@ spec:
           - /bin/bash
           - -c
           - |
-            if quickwit index describe --index {{ .index_id }} --endpoint ${QW_CLUSTER_ENDPOINT}; then
+            set +e   # disable immediate exit on error
+
+            if quickwit index describe --index {{ .index_id }} --endpoint "${QW_CLUSTER_ENDPOINT}"; then
               echo "Index {{ .index_id }} already exists, skipping create."
             else
               echo "Creating index {{ .index_id }}..."
-              quickwit index create --index-config {{ .index_id }}.yaml --endpoint ${QW_CLUSTER_ENDPOINT}
+              if ! quickwit index create --index-config "{{ .index_id }}.yaml" --endpoint "${QW_CLUSTER_ENDPOINT}"; then
+                echo "❌ Failed to create index {{ .index_id }}. Continuing anyway..."
+              fi
             fi
+            echo "✅ Script finished (ignoring errors)."
+            exit 0
         {{- end }}
         env:
           {{- include "quickwit.environment" $ | nindent 10 }}
