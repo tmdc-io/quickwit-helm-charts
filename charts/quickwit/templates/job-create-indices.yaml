@@ -45,11 +45,11 @@ spec:
           - /bin/bash
           - -c
           - |
-            if quickwit index describe --index {{ $.Values.index_id }} --endpoint ${QW_CLUSTER_ENDPOINT}; then
-              echo "Index {{ $.Values.index_id }} already exists, skipping create."
+            if quickwit index describe --index {{ .index_id }} --endpoint ${QW_CLUSTER_ENDPOINT}; then
+              echo "Index {{ .index_id }} already exists, skipping create."
             else
-              echo "Creating index {{ $.Values.index_id }}..."
-              quickwit index create --index-config {{ $.Values.index_id }}.yaml --endpoint ${QW_CLUSTER_ENDPOINT}
+              echo "Creating index {{ .index_id }}..."
+              quickwit index create --index-config {{ .index_id }}.yaml --endpoint ${QW_CLUSTER_ENDPOINT}
             fi
         {{- end }}
         env:
