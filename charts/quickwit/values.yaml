@@ -581,7 +581,7 @@ seed:
 
 # Prometheus metrics
 serviceMonitor:
-  enabled: false
+  enabled: true
   # -- Additional labels to add to monitoring resources
   additionalLabels: {}
   interval: 60s
