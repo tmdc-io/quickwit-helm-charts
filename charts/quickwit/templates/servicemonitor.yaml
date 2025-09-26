@@ -9,12 +9,12 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  jobLabel: app.kubernetes.io/instance
-  selector:
-    matchLabels:
-      {{- include "quickwit.selectorLabels" . | nindent 6 }}
   {{- if .Values.serviceMonitor.endpoints }}
   endpoints:
 {{ toYaml .Values.serviceMonitor.endpoints | indent 2 }}
   {{- end }}
+  jobLabel: app.kubernetes.io/instance
+  selector:
+    matchLabels:
+      {{- include "quickwit.selectorLabels" . | nindent 6 }}
 {{- end }}

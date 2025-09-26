@@ -672,6 +672,6 @@ resources: {}
 serviceMonitor:
   endpoints:
   - interval: 60s
-    port: metrics
+    port: rest
     path: /metrics
     scheme: http
