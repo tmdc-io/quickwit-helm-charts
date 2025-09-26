@@ -669,3 +669,9 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+serviceMonitor:
+  endpoints:
+  - interval: 60s
+    port: metrics
+    path: /metrics
+    scheme: http
