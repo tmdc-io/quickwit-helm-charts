@@ -155,6 +155,22 @@ indexer:
 
   replicaCount: 1
 
+  # HorizontalPodAutoscaler for the indexer StatefulSet.
+  # replicaCount remains on the StatefulSet and is what Helm applies at install time.
+  autoscaling:
+    enabled: false
+    annotations: {}
+    minReplicas: 1
+    maxReplicas: 10
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 70
+    behavior: {}
+
   # Extra env for indexer
   extraEnv: {}
     # KEY: VALUE

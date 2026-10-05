@@ -1,0 +1,26 @@
+{{- if and .Values.indexer.enabled .Values.indexer.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "quickwit.fullname" . }}-indexer
+  labels:
+    {{- include "quickwit.labels" . | nindent 4 }}
+    app.kubernetes.io/component: indexer-hpa
+  {{- with .Values.indexer.autoscaling.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: {{ include "quickwit.fullname" . }}-indexer
+  minReplicas: {{ .Values.indexer.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.indexer.autoscaling.maxReplicas }}
+  metrics:
+    {{- toYaml .Values.indexer.autoscaling.metrics | nindent 4 }}
+  {{- if gt (len .Values.indexer.autoscaling.behavior) 0 }}
+  behavior:
+    {{- toYaml .Values.indexer.autoscaling.behavior | nindent 4 }}
+  {{- end }}
+{{- end }}
